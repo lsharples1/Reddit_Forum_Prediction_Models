@@ -29,16 +29,39 @@ vm['forum'] = "r/VaccineMyths"
 data = pd.DataFrame().append([crypto,wsb,vm])
 df = data.dropna()
 print(df['forum'].value_counts())
-train, test = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
-#print(train['forum'].value_counts())
-from sklearn.feature_extraction.text import CountVectorizer
+
 count_vect = CountVectorizer()
+train, test = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
+X_train = count_vect.fit_transform(train.body)
+X_test = count_vect.transform(test.body)
+Y_train = train.forum
+Y_test = test.forum
+
+
+#print(train['forum'].value_counts())
+
+
 #X_train_counts = count_vect.fit_transform(twenty_train.data)
-X_train_counts = count_vect.fit_transform(train.body)
-clf = MultinomialNB().fit(X_train_counts, train.forum)
-X_new_counts = count_vect.transform(test.body)
+
+clfM = MultinomialNB().fit(X_train, Y_train)
+clfB = BernoulliNB().fit(X_train, Y_train)
+
+Y_predM = clfM.predict(X_test)
+Y_predB = clfB.predict(X_test)
+
+accuracyM = metrics.accuracy_score(Y_test, Y_predM)
+accuracyB = metrics.accuracy_score(Y_test, Y_predB)
+#Multinomial NB with no adjustments
+#plot(clfM, X_test, Y_test, "Multinomial NB")
+print('Multinomial Accuracy (OG data) = ' +str(accuracyM))
+
+#Bernoulli NB with no adjustments
+#plot(clfB, X_test, Y_test, "Bernoulli NB")
+print('Bernoulli Accuracy (OG data) = ' + str(accuracyB))
+
+#X_new_counts = count_vect.transform(test.body)
 #print(X_new_counts)
 
-predicted = clf.predict(X_new_counts)
-for doc, category in zip(test.body, predicted):
-    print(f'{doc} => {category}')
+#predicted = clfM.predict(X_new_counts)
+#for doc, category in zip(test.body, predicted):
+   # print(f'{doc} => {category}')
