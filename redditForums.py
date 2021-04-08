@@ -46,7 +46,7 @@ cv.rename(columns={'title':'body'}, inplace=True)
 cv['forum'] = "r/Coronavirus"
 
 
-data = pd.DataFrame().append([crypto,wsb,vm,cv,android,news,trump])
+data = pd.DataFrame().append([crypto,wsb,vm,cv,android,news])
 #get rid of null entries
 print(data['forum'].value_counts())
 df = data.dropna()
