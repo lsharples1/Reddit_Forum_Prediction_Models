@@ -18,8 +18,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import plot_confusion_matrix
 import sklearn.metrics as metrics
 
-crypto = pd.read_csv('Data/Crypto.csv', usecols=['body'])
-crypto['forum'] = "r/Crypto"
+#crypto = pd.read_csv('Data/Crypto.csv', usecols=['body'])
+#crypto['forum'] = "r/Crypto"
 
 wsb = pd.read_csv('Data/WallStreetBets.csv', usecols=['title'])
 wsb.rename(columns={'title':'body'}, inplace=True)
