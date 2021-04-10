@@ -18,8 +18,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import plot_confusion_matrix
 import sklearn.metrics as metrics
 
-#crypto = pd.read_csv('Data/Crypto.csv', usecols=['body'])
-#crypto['forum'] = "r/Crypto"
+crypto = pd.read_csv('Data/Crypto.csv', usecols=['body'])
+crypto['forum'] = "r/Crypto"
 
 wsb = pd.read_csv('Data/WallStreetBets.csv', usecols=['title'])
 wsb.rename(columns={'title':'body'}, inplace=True)
@@ -48,10 +48,10 @@ cv['forum'] = "r/Coronavirus"
 
 data = pd.DataFrame().append([crypto,wsb,vm,cv,android,news])
 #get rid of null entries
-print(data['forum'].value_counts())
+#print(data['forum'].value_counts())
 df = data.dropna()
-print(df['forum'].value_counts())
-
+#print(df['forum'].value_counts())
+print(df.head)
 count_vect = CountVectorizer()
 train, test = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
 #print(train['forum'].value_counts())
@@ -63,11 +63,10 @@ Y_test = test.forum
 
 
 #original accuracy: MNB .965, BNB .859
-print('before smote')
+print('after smote')
 from imblearn.over_sampling import SMOTE
 sm = SMOTE()
 X_train, Y_train = sm.fit_resample(X_train, Y_train)
-print('after smote')
 clfM = MultinomialNB().fit(X_train, Y_train)
 clfB = BernoulliNB().fit(X_train, Y_train)
 
