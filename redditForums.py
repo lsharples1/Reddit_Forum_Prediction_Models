@@ -48,20 +48,26 @@ cv['forum'] = "r/Coronavirus"
 
 data = pd.DataFrame().append([crypto,wsb,vm,cv,android,news])
 df = data.dropna()
+
+#create a column of the dataframe that contains no stopwords
+stop = stopwords.words('english')
+df['without_stopwords'] = df['body'].apply(lambda x: ' '.join([word for word in x.split() if word not in (stop)]))
+
+
 count_vect = CountVectorizer()
 
 #data default split .25/.75
 train, test = train_test_split(df, random_state=5, shuffle=True)
 
-X_train = count_vect.fit_transform(train.body)
-X_test = count_vect.transform(test.body)
+X_train = count_vect.fit_transform(train.without_stopwords)
+X_test = count_vect.transform(test.without_stopwords)
 
 Y_train = train.forum
 Y_test = test.forum
 
 tfidf_count_vect = TfidfVectorizer()
-tfidf_X_train = tfidf_count_vect.fit_transform(train.body)
-tfidf_X_test = tfidf_count_vect.transform(test.body)
+tfidf_X_train = tfidf_count_vect.fit_transform(train.without_stopwords)
+tfidf_X_test = tfidf_count_vect.transform(test.without_stopwords)
 
 #MNB .965, BNM .860, RS =  5, default train test split
 clfM = MultinomialNB().fit(X_train, Y_train)
