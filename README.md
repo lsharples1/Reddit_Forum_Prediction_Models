@@ -1,4 +1,7 @@
-# CSCI_4380_Mini_Project_2
+The objective of this research is to accurately classify what forum a Reddit post came from, given the text of the post. To predict which forum a post came from, we trained two variations of Naive Bayes classifiers- Multinomial and Bernoulli.
+
+
+Code is in redditForums.py, report is redditForums.pdf.
 
 r/WorldNews
 https://www.kaggle.com/rootuser/worldnews-on-reddit
